@@ -42,7 +42,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         '--package-name', required=True,
         help='Package name as it appears on the remote package manager.',
     )
-
+    parser.add_argument(
+        '--name', required=False,
+        help='The name',
+    )
     mutex = parser.add_mutually_exclusive_group(required=True)
     mutex.add_argument(
         '--files-regex', help='Files regex to use in hooks.yaml',
@@ -69,7 +72,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
 
     make_repo(
         args.repo_path,
-        name=args.package_name,
+        name=args.name or args.package_name,
+        package_name=args.package_name,
         language=args.language,
         entry=args.entry or args.package_name,
         match_key='types' if args.types else 'files',
